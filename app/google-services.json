@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "921728789386",
+    "project_id": "restredder",
+    "storage_bucket": "restredder.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:921728789386:android:a54334c2e35d3ea431f673",
+        "android_client_info": {
+          "package_name": "com.example.restredder"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDFFFiFHstb_3Ud6iEmWU4JAyUM_prIhOk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
