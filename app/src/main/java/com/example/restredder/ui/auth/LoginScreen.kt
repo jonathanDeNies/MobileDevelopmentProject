@@ -19,6 +19,7 @@ import com.example.restredder.R
 fun LoginScreen(
     onLoggedIn: () -> Unit,
     onRegisterClick: () -> Unit,
+    onForgotPasswordClick: () -> Unit,
     viewModel: LoginViewModel = viewModel()
 ) {
     var email by rememberSaveable { mutableStateOf("") }
@@ -64,7 +65,14 @@ fun LoginScreen(
             modifier = Modifier.fillMaxWidth()
         )
 
-        Spacer(modifier = Modifier.height(24.dp))
+        TextButton(
+            onClick = onForgotPasswordClick,
+            modifier = Modifier.align(Alignment.End)
+        ) {
+            Text(stringResource(R.string.forgot_password_link))
+        }
+
+        Spacer(modifier = Modifier.height(12.dp))
 
         Button(
             onClick = { viewModel.login(email, password) },

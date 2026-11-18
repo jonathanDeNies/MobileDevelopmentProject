@@ -30,6 +30,15 @@ class AuthRepository(
 
     fun logout() = auth.signOut()
 
+    suspend fun sendPasswordReset(email: String): Result<Unit> {
+        return try {
+            auth.sendPasswordResetEmail(email.trim()).await()
+            Result.success(Unit)
+        } catch (e: Exception) {
+            Result.failure(AuthException(e.toAuthError(), e))
+        }
+    }
+
     suspend fun register(
         name: String,
         email: String,

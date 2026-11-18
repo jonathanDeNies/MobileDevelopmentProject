@@ -12,8 +12,17 @@
     <string name="login_no_account">No account yet? Register</string>
     <string name="logout_button">Log out</string>
 
+    <string name="forgot_password_link">Forgot password?</string>
+    <string name="forgot_password_title">Reset your password</string>
+    <string name="forgot_password_explanation">Enter your email address and we\'ll send you a link to reset your password.</string>
+    <string name="send_reset_link_button">Send reset link</string>
+    <string name="reset_email_sent">If an account exists for this email, you\'ll receive a link to reset your password. Check your spam folder too.</string>
+    <string name="back_to_login_button">Back to login</string>
+
     <string name="error_invalid_credentials">Incorrect email or password.</string>
     <string name="error_network">No internet connection. Please try again.</string>
     <string name="error_too_many_requests">Too many attempts. Please try again later.</string>
     <string name="error_login_failed">Login failed. Please try again.</string>
+    <string name="error_invalid_email">Please enter a valid email address.</string>
+    <string name="error_reset_failed">Could not send the reset link. Please try again.</string>
 </resources>

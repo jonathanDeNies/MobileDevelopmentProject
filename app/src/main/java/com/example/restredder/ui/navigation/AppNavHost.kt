@@ -5,6 +5,7 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.example.restredder.ui.auth.ForgotPasswordScreen
 import com.example.restredder.ui.auth.LoginScreen
 import com.example.restredder.ui.auth.RegisterScreen
 import com.example.restredder.ui.home.HomeScreen
@@ -13,6 +14,7 @@ import com.example.restredder.ui.packages.AvailablePackagesScreen
 object Routes {
     const val LOGIN = "login"
     const val REGISTER = "register"
+    const val FORGOT_PASSWORD = "forgot_password"
     const val HOME = "home"
     const val AVAILABLE_PACKAGES = "available_packages"
 }
@@ -39,8 +41,13 @@ fun AppNavHost(
         composable(Routes.LOGIN) {
             LoginScreen(
                 onLoggedIn = navigateToHome,
-                onRegisterClick = { navController.navigate(Routes.REGISTER) }
+                onRegisterClick = { navController.navigate(Routes.REGISTER) },
+                onForgotPasswordClick = { navController.navigate(Routes.FORGOT_PASSWORD) }
             )
+        }
+
+        composable(Routes.FORGOT_PASSWORD) {
+            ForgotPasswordScreen(onBackToLogin = { navController.popBackStack() })
         }
 
         composable(Routes.REGISTER) {
