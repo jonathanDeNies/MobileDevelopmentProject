@@ -5,39 +5,57 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.example.restredder.ui.auth.LoginScreen
 import com.example.restredder.ui.auth.RegisterScreen
 import com.example.restredder.ui.home.HomeScreen
 import com.example.restredder.ui.packages.AvailablePackagesScreen
 
 object Routes {
+    const val LOGIN = "login"
     const val REGISTER = "register"
     const val HOME = "home"
     const val AVAILABLE_PACKAGES = "available_packages"
 }
 
 @Composable
-fun AppNavHost(modifier: Modifier = Modifier) {
+fun AppNavHost(
+    startDestination: String,
+    modifier: Modifier = Modifier
+) {
     val navController = rememberNavController()
+
+    // Go to home and remove login/register from the back stack.
+    val navigateToHome: () -> Unit = {
+        navController.navigate(Routes.HOME) {
+            popUpTo(Routes.LOGIN) { inclusive = true }
+        }
+    }
 
     NavHost(
         navController = navController,
-        startDestination = Routes.REGISTER,
+        startDestination = startDestination,
         modifier = modifier
     ) {
-        composable(Routes.REGISTER) {
-            RegisterScreen(
-                onRegistered = {
-                    navController.navigate(Routes.HOME) {
-                        popUpTo(Routes.REGISTER) { inclusive = true }
-                    }
-                }
+        composable(Routes.LOGIN) {
+            LoginScreen(
+                onLoggedIn = navigateToHome,
+                onRegisterClick = { navController.navigate(Routes.REGISTER) }
             )
+        }
+
+        composable(Routes.REGISTER) {
+            RegisterScreen(onRegistered = navigateToHome)
         }
 
         composable(Routes.HOME) {
             HomeScreen(
                 onAvailablePackagesClick = {
                     navController.navigate(Routes.AVAILABLE_PACKAGES)
+                },
+                onLoggedOut = {
+                    navController.navigate(Routes.LOGIN) {
+                        popUpTo(Routes.HOME) { inclusive = true }
+                    }
                 }
             )
         }

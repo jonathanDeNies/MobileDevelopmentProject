@@ -4,4 +4,16 @@
     <string name="location_permission_explanation">RestRedder uses your location to show food packages in your area.</string>
     <string name="location_permission_button">Allow location</string>
     <string name="location_permission_granted">Location permission granted</string>
+
+    <string name="login_title">Log in to RestRedder</string>
+    <string name="email_label">Email</string>
+    <string name="password_label">Password</string>
+    <string name="login_button">Log in</string>
+    <string name="login_no_account">No account yet? Register</string>
+    <string name="logout_button">Log out</string>
+
+    <string name="error_invalid_credentials">Incorrect email or password.</string>
+    <string name="error_network">No internet connection. Please try again.</string>
+    <string name="error_too_many_requests">Too many attempts. Please try again later.</string>
+    <string name="error_login_failed">Login failed. Please try again.</string>
 </resources>
