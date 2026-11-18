@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">RestRedder</string>
+    <string name="available_packages_button">Available packages</string>
+    <string name="location_permission_explanation">RestRedder uses your location to show food packages in your area.</string>
+    <string name="location_permission_button">Allow location</string>
+    <string name="location_permission_granted">Location permission granted</string>
 </resources>

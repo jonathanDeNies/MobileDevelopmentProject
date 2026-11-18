@@ -9,7 +9,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.ui.Modifier
-import com.example.restredder.ui.auth.RegisterScreen
+import com.example.restredder.ui.navigation.AppNavHost
 import com.example.restredder.ui.theme.RestRedderTheme
 
 class MainActivity : ComponentActivity() {
@@ -27,7 +27,7 @@ class MainActivity : ComponentActivity() {
                     androidx.compose.foundation.layout.Box(
                         modifier = Modifier.padding(innerPadding)
                     ) {
-                        RegisterScreen()
+                        AppNavHost()
                     }
                 }
             }

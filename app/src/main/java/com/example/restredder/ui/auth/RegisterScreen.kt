@@ -16,6 +16,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 
 @Composable
 fun RegisterScreen(
+    onRegistered: () -> Unit = {},
     viewModel: RegisterViewModel = viewModel()
 ) {
     var name by rememberSaveable { mutableStateOf("") }
@@ -26,6 +27,10 @@ fun RegisterScreen(
     }
 
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+
+    LaunchedEffect(uiState.isSuccess) {
+        if (uiState.isSuccess) onRegistered()
+    }
 
     Column(
         modifier = Modifier
