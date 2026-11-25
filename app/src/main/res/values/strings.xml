@@ -27,7 +27,13 @@
     <string name="error_invalid_email">Please enter a valid email address.</string>
     <string name="error_reset_failed">Could not send the reset link. Please try again.</string>
 
-    <string name="create_store_button">Create store</string>
+    <string name="my_stores_button">My stores</string>
+    <string name="my_stores_title">My stores</string>
+    <string name="add_store_button">Add store</string>
+    <string name="no_stores_title">You don\'t have any stores yet</string>
+    <string name="no_stores_subtitle">Add your first store so customers can find your surprise packages.</string>
+    <string name="error_stores_load_failed">Couldn\'t load your stores. Try again later.</string>
+    <string name="error_stores_permission">You don\'t have permission to view these stores.</string>
     <string name="create_store_title">Create your store</string>
     <string name="store_name_label">Store name</string>
     <string name="store_category_label">Category</string>

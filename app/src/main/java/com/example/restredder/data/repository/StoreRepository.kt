@@ -4,6 +4,9 @@ import com.example.restredder.data.model.Store
 import com.example.restredder.data.model.StoreCategory
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
+import kotlinx.coroutines.channels.awaitClose
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.callbackFlow
 import kotlinx.coroutines.tasks.await
 
 class StoreRepository(
@@ -40,4 +43,30 @@ class StoreRepository(
         }
     }
 
+    /**
+     * Live list of the logged-in merchant's stores, sorted by name.
+     * Emits again whenever a store is added, changed or removed.
+     * Sorted in the app, so Firestore doesn't need a composite index.
+     */
+    fun observeMyStores(): Flow<List<Store>> = callbackFlow {
+        val uid = auth.currentUser?.uid
+        if (uid == null) {
+            trySend(emptyList())
+            close()
+            return@callbackFlow
+        }
+
+        val registration = firestore.collection("stores")
+            .whereEqualTo("ownerId", uid)
+            .addSnapshotListener { snapshot, error ->
+                if (error != null) {
+                    close(error)
+                    return@addSnapshotListener
+                }
+                val stores = snapshot?.toObjects(Store::class.java).orEmpty()
+                trySend(stores.sortedBy { it.name.lowercase() })
+            }
+
+        awaitClose { registration.remove() }
+    }
 }

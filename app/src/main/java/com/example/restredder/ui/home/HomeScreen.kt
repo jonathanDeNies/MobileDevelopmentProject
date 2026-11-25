@@ -24,7 +24,7 @@ import com.example.restredder.R
 @Composable
 fun HomeScreen(
     onAvailablePackagesClick: () -> Unit,
-    onCreateStoreClick: () -> Unit,
+    onMyStoresClick: () -> Unit,
     onLoggedOut: () -> Unit,
     viewModel: HomeViewModel = viewModel()
 ) {
@@ -42,10 +42,10 @@ fun HomeScreen(
         } else {
             if (uiState.role == "merchant") {
                 Button(
-                    onClick = onCreateStoreClick,
+                    onClick = onMyStoresClick,
                     modifier = Modifier.fillMaxWidth()
                 ) {
-                    Text(stringResource(R.string.create_store_button))
+                    Text(stringResource(R.string.my_stores_button))
                 }
             } else {
                 Button(

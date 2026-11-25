@@ -22,6 +22,7 @@ import com.example.restredder.ui.location.LocationPickerViewModel.Companion.ARG_
 import com.example.restredder.ui.packages.AvailablePackagesScreen
 import com.example.restredder.ui.store.CreateStoreScreen
 import com.example.restredder.ui.store.CreateStoreViewModel
+import com.example.restredder.ui.store.MyStoresScreen
 
 object Routes {
     const val LOGIN = "login"
@@ -29,6 +30,7 @@ object Routes {
     const val FORGOT_PASSWORD = "forgot_password"
     const val HOME = "home"
     const val AVAILABLE_PACKAGES = "available_packages"
+    const val MY_STORES = "my_stores"
     const val CREATE_STORE = "create_store"
     const val LOCATION_PICKER =
         "location_picker?$ARG_LATITUDE={$ARG_LATITUDE}&$ARG_LONGITUDE={$ARG_LONGITUDE}&$ARG_ADDRESS={$ARG_ADDRESS}"
@@ -88,8 +90,8 @@ fun AppNavHost(
                 onAvailablePackagesClick = {
                     navController.navigate(Routes.AVAILABLE_PACKAGES)
                 },
-                onCreateStoreClick = {
-                    navController.navigate(Routes.CREATE_STORE)
+                onMyStoresClick = {
+                    navController.navigate(Routes.MY_STORES)
                 },
                 onLoggedOut = {
                     navController.navigate(Routes.LOGIN) {
@@ -101,6 +103,13 @@ fun AppNavHost(
 
         composable(Routes.AVAILABLE_PACKAGES) {
             AvailablePackagesScreen()
+        }
+
+        composable(Routes.MY_STORES) {
+            MyStoresScreen(
+                onBack = { navController.popBackStack() },
+                onAddStore = { navController.navigate(Routes.CREATE_STORE) }
+            )
         }
 
         composable(Routes.CREATE_STORE) { entry ->
