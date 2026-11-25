@@ -30,6 +30,19 @@ class AuthRepository(
 
     fun logout() = auth.signOut()
 
+    suspend fun getCurrentUserRole(): String? {
+        val uid = auth.currentUser?.uid ?: return null
+        return try {
+            firestore.collection("users")
+                .document(uid)
+                .get()
+                .await()
+                .getString("role")
+        } catch (e: Exception) {
+            null
+        }
+    }
+
     suspend fun sendPasswordReset(email: String): Result<Unit> {
         return try {
             auth.sendPasswordResetEmail(email.trim()).await()

@@ -12,6 +12,7 @@
     <string name="login_no_account">No account yet? Register</string>
     <string name="logout_button">Log out</string>
 
+
     <string name="forgot_password_link">Forgot password?</string>
     <string name="forgot_password_title">Reset your password</string>
     <string name="forgot_password_explanation">Enter your email address and we\'ll send you a link to reset your password.</string>
@@ -25,4 +26,36 @@
     <string name="error_login_failed">Login failed. Please try again.</string>
     <string name="error_invalid_email">Please enter a valid email address.</string>
     <string name="error_reset_failed">Could not send the reset link. Please try again.</string>
+
+    <string name="create_store_button">Create store</string>
+    <string name="create_store_title">Create your store</string>
+    <string name="store_name_label">Store name</string>
+    <string name="store_category_label">Category</string>
+    <string name="store_location_label">Location</string>
+    <string name="choose_location_title">Choose your store\'s location</string>
+    <string name="choose_location_subtitle">Search for an address or place a pin on the map</string>
+    <string name="change_location">Change location</string>
+    <string name="save_store_button">Save store</string>
+
+    <string name="category_bakery">Bakery</string>
+    <string name="category_supermarket">Supermarket</string>
+    <string name="category_restaurant">Restaurant</string>
+    <string name="category_cafe">Café</string>
+    <string name="category_butcher">Butcher</string>
+    <string name="category_other">Other</string>
+
+    <string name="error_search_failed">Couldn\'t search for addresses. Try again.</string>
+    <string name="error_store_save_failed">Could not save the store. Please try again.</string>
+    <string name="error_store_permission">You don\'t have permission to create a store.</string>
+
+    <string name="back_button">Back</string>
+    <string name="location_picker_title">Choose location</string>
+    <string name="search_address_hint">Search for an address</string>
+    <string name="clear_search">Clear search</string>
+    <string name="no_search_results">No addresses found. Try another search.</string>
+    <string name="pick_location_hint">Search for an address or tap the map to place a pin.</string>
+    <string name="selected_location_label">Selected location</string>
+    <string name="looking_up_address">Looking up address…</string>
+    <string name="use_location_button">Use this location</string>
+    <string name="coordinates_format">%1$.5f, %2$.5f</string>
 </resources>

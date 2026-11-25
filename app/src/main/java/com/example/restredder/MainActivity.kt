@@ -5,6 +5,8 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.compose.foundation.layout.ExperimentalLayoutApi
+import androidx.compose.foundation.layout.consumeWindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
@@ -16,6 +18,7 @@ import com.example.restredder.ui.theme.RestRedderTheme
 
 class MainActivity : ComponentActivity() {
 
+    @OptIn(ExperimentalLayoutApi::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -30,7 +33,11 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize()
                 ) { innerPadding ->
                     androidx.compose.foundation.layout.Box(
-                        modifier = Modifier.padding(innerPadding)
+                        // consumeWindowInsets: so imePadding() in screens doesn't add the
+                        // navigation bar height twice when the keyboard is open.
+                        modifier = Modifier
+                            .padding(innerPadding)
+                            .consumeWindowInsets(innerPadding)
                     ) {
                         AppNavHost(startDestination = startDestination)
                     }
