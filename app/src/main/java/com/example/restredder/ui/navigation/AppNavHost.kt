@@ -93,6 +93,9 @@ fun AppNavHost(
                 onMyStoresClick = {
                     navController.navigate(Routes.MY_STORES)
                 },
+                onAddStoreClick = {
+                    navController.navigate(Routes.CREATE_STORE)
+                },
                 onLoggedOut = {
                     navController.navigate(Routes.LOGIN) {
                         popUpTo(Routes.HOME) { inclusive = true }

@@ -9,8 +9,12 @@ import kotlinx.coroutines.launch
 
 data class HomeUiState(
     val isLoading: Boolean = true,
+    val name: String = "",
+    val email: String = "",
     val role: String? = null
-)
+) {
+    val isMerchant: Boolean get() = role == "merchant"
+}
 
 class HomeViewModel(
     private val repository: AuthRepository = AuthRepository()
@@ -21,9 +25,12 @@ class HomeViewModel(
 
     init {
         viewModelScope.launch {
+            val user = repository.getCurrentUser()
             _uiState.value = HomeUiState(
                 isLoading = false,
-                role = repository.getCurrentUserRole()
+                name = user?.name.orEmpty(),
+                email = user?.email.orEmpty(),
+                role = user?.role
             )
         }
     }

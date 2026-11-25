@@ -12,6 +12,12 @@
     <string name="login_no_account">No account yet? Register</string>
     <string name="logout_button">Log out</string>
 
+    <string name="home_greeting">Hi, %1$s</string>
+    <string name="home_greeting_no_name">Hi there</string>
+    <string name="home_subtitle">What do you want to do today?</string>
+    <string name="open_menu">Open menu</string>
+    <string name="role_merchant">Merchant</string>
+    <string name="role_customer">Customer</string>
 
     <string name="forgot_password_link">Forgot password?</string>
     <string name="forgot_password_title">Reset your password</string>

@@ -30,14 +30,16 @@ class AuthRepository(
 
     fun logout() = auth.signOut()
 
-    suspend fun getCurrentUserRole(): String? {
-        val uid = auth.currentUser?.uid ?: return null
+    /** Profile of the logged-in user (name, email, role), or null if it can't be loaded. */
+    suspend fun getCurrentUser(): AppUser? {
+        val user = auth.currentUser ?: return null
         return try {
             firestore.collection("users")
-                .document(uid)
+                .document(user.uid)
                 .get()
                 .await()
-                .getString("role")
+                .toObject(AppUser::class.java)
+                ?.let { it.copy(email = it.email.ifBlank { user.email.orEmpty() }) }
         } catch (e: Exception) {
             null
         }
