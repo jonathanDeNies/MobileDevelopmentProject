@@ -43,6 +43,19 @@ class StoreRepository(
         }
     }
 
+    /** Permanently deletes a store. Firestore rules only allow this for the owner. */
+    suspend fun deleteStore(storeId: String): Result<Unit> {
+        return try {
+            firestore.collection("stores")
+                .document(storeId)
+                .delete()
+                .await()
+            Result.success(Unit)
+        } catch (e: Exception) {
+            Result.failure(e)
+        }
+    }
+
     /**
      * Live list of the logged-in merchant's stores, sorted by name.
      * Emits again whenever a store is added, changed or removed.

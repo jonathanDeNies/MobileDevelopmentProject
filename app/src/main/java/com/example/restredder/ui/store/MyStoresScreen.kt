@@ -1,5 +1,6 @@
 package com.example.restredder.ui.store
 
+import androidx.annotation.StringRes
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -19,8 +20,11 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Add
-import androidx.compose.material.icons.filled.Home
+import androidx.compose.material.icons.filled.DeleteOutline
+import androidx.compose.material.icons.filled.Storefront
 import androidx.compose.material.icons.filled.Place
+import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CircularProgressIndicator
@@ -32,6 +36,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -115,16 +120,88 @@ fun MyStoresScreen(
                     verticalArrangement = Arrangement.spacedBy(12.dp)
                 ) {
                     items(uiState.stores, key = { it.id }) { store ->
-                        StoreCard(store)
+                        StoreCard(
+                            store = store,
+                            onDeleteClick = { viewModel.onDeleteClick(store) }
+                        )
                     }
                 }
             }
         }
     }
+
+    uiState.storeToDelete?.let { store ->
+        DeleteStoreDialog(
+            storeName = store.name,
+            isDeleting = uiState.isDeleting,
+            errorMessageRes = uiState.deleteErrorRes,
+            onConfirm = viewModel::confirmDelete,
+            onDismiss = viewModel::onDeleteDismiss
+        )
+    }
 }
 
 @Composable
-private fun StoreCard(store: Store) {
+private fun DeleteStoreDialog(
+    storeName: String,
+    isDeleting: Boolean,
+    @StringRes errorMessageRes: Int?,
+    onConfirm: () -> Unit,
+    onDismiss: () -> Unit
+) {
+    AlertDialog(
+        onDismissRequest = onDismiss,
+        icon = {
+            Icon(
+                imageVector = Icons.Filled.DeleteOutline,
+                contentDescription = null,
+                tint = MaterialTheme.colorScheme.error
+            )
+        },
+        title = { Text(stringResource(R.string.delete_store_title, storeName)) },
+        text = {
+            Column {
+                Text(stringResource(R.string.delete_store_message))
+                errorMessageRes?.let {
+                    Spacer(modifier = Modifier.height(12.dp))
+                    Text(
+                        text = stringResource(it),
+                        color = MaterialTheme.colorScheme.error
+                    )
+                }
+            }
+        },
+        confirmButton = {
+            TextButton(
+                onClick = onConfirm,
+                enabled = !isDeleting,
+                colors = ButtonDefaults.textButtonColors(
+                    contentColor = MaterialTheme.colorScheme.error
+                )
+            ) {
+                if (isDeleting) {
+                    CircularProgressIndicator(
+                        modifier = Modifier.size(18.dp),
+                        strokeWidth = 2.dp
+                    )
+                } else {
+                    Text(stringResource(R.string.delete_button))
+                }
+            }
+        },
+        dismissButton = {
+            TextButton(onClick = onDismiss, enabled = !isDeleting) {
+                Text(stringResource(R.string.cancel_button))
+            }
+        }
+    )
+}
+
+@Composable
+private fun StoreCard(
+    store: Store,
+    onDeleteClick: () -> Unit
+) {
     Card(
         shape = RoundedCornerShape(20.dp),
         colors = CardDefaults.cardColors(
@@ -153,9 +230,16 @@ private fun StoreCard(store: Store) {
                         modifier = Modifier.padding(horizontal = 10.dp, vertical = 4.dp)
                     )
                 }
+                IconButton(onClick = onDeleteClick) {
+                    Icon(
+                        imageVector = Icons.Filled.DeleteOutline,
+                        contentDescription = stringResource(R.string.delete_store_description, store.name),
+                        tint = MaterialTheme.colorScheme.error
+                    )
+                }
             }
 
-            Spacer(modifier = Modifier.height(8.dp))
+            Spacer(modifier = Modifier.height(4.dp))
 
             Row(verticalAlignment = Alignment.CenterVertically) {
                 Icon(
@@ -190,7 +274,7 @@ private fun EmptyStores(modifier: Modifier = Modifier) {
             color = MaterialTheme.colorScheme.primaryContainer
         ) {
             Icon(
-                imageVector = Icons.Filled.Home,
+                imageVector = Icons.Filled.Storefront,
                 contentDescription = null,
                 tint = MaterialTheme.colorScheme.onPrimaryContainer,
                 modifier = Modifier

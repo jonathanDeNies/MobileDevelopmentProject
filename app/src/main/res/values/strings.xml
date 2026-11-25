@@ -40,6 +40,13 @@
     <string name="no_stores_subtitle">Add your first store so customers can find your surprise packages.</string>
     <string name="error_stores_load_failed">Couldn\'t load your stores. Try again later.</string>
     <string name="error_stores_permission">You don\'t have permission to view these stores.</string>
+    <string name="delete_store_description">Delete %1$s</string>
+    <string name="delete_store_title">Delete %1$s?</string>
+    <string name="delete_store_message">This store will be removed permanently. You can\'t undo this.</string>
+    <string name="delete_button">Delete</string>
+    <string name="cancel_button">Cancel</string>
+    <string name="error_delete_store_failed">Couldn\'t delete the store. Try again.</string>
+    <string name="error_delete_store_permission">You can only delete your own stores.</string>
     <string name="create_store_title">Create your store</string>
     <string name="store_name_label">Store name</string>
     <string name="store_category_label">Category</string>
