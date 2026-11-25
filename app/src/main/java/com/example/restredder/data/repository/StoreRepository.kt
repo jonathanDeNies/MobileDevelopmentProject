@@ -58,6 +58,30 @@ class StoreRepository(
         }
     }
 
+    /** Moves a store. Only the location fields change; Firestore rules only allow this for the owner. */
+    suspend fun updateStoreLocation(
+        storeId: String,
+        latitude: Double,
+        longitude: Double,
+        address: String
+    ): Result<Unit> {
+        return try {
+            firestore.collection("stores")
+                .document(storeId)
+                .update(
+                    mapOf(
+                        "latitude" to latitude,
+                        "longitude" to longitude,
+                        "address" to address
+                    )
+                )
+                .await()
+            Result.success(Unit)
+        } catch (e: Exception) {
+            Result.failure(e)
+        }
+    }
+
     /**
      * Live list of the logged-in merchant's stores, sorted by name.
      * Emits again whenever a store is added, changed or removed.

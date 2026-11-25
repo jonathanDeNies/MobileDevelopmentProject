@@ -4,6 +4,7 @@ import android.net.Uri
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
@@ -23,6 +24,7 @@ import com.example.restredder.ui.packages.AvailablePackagesScreen
 import com.example.restredder.ui.store.CreateStoreScreen
 import com.example.restredder.ui.store.CreateStoreViewModel
 import com.example.restredder.ui.store.MyStoresScreen
+import com.example.restredder.ui.store.MyStoresViewModel
 
 object Routes {
     const val LOGIN = "login"
@@ -45,10 +47,22 @@ object Routes {
         }
 }
 
-// Keys used to send the picked location back to the create store screen.
+// Keys used to send the picked location back to the previous screen.
 private const val RESULT_LATITUDE = "picked_latitude"
 private const val RESULT_LONGITUDE = "picked_longitude"
 private const val RESULT_ADDRESS = "picked_address"
+
+/** Reads and removes the location sent back by the location picker, if there is one. */
+private fun SavedStateHandle.takePickedLocation(): PlaceResult? {
+    val latitude = remove<Double>(RESULT_LATITUDE)
+    val longitude = remove<Double>(RESULT_LONGITUDE)
+    val address = remove<String>(RESULT_ADDRESS).orEmpty()
+    return if (latitude != null && longitude != null) {
+        PlaceResult(latitude, longitude, address)
+    } else {
+        null
+    }
+}
 
 @Composable
 fun AppNavHost(
@@ -108,10 +122,27 @@ fun AppNavHost(
             AvailablePackagesScreen()
         }
 
-        composable(Routes.MY_STORES) {
+        composable(Routes.MY_STORES) { entry ->
+            val myStoresViewModel: MyStoresViewModel = viewModel()
+
+            // Runs again when coming back from the location picker.
+            LaunchedEffect(entry) {
+                entry.savedStateHandle.takePickedLocation()?.let { place ->
+                    myStoresViewModel.onLocationPicked(place)
+                }
+            }
+
             MyStoresScreen(
                 onBack = { navController.popBackStack() },
-                onAddStore = { navController.navigate(Routes.CREATE_STORE) }
+                onAddStore = { navController.navigate(Routes.CREATE_STORE) },
+                onChangeLocation = { store ->
+                    navController.navigate(
+                        Routes.locationPicker(
+                            PlaceResult(store.latitude, store.longitude, store.address)
+                        )
+                    )
+                },
+                viewModel = myStoresViewModel
             )
         }
 
@@ -120,12 +151,8 @@ fun AppNavHost(
 
             // Runs again when coming back from the location picker.
             LaunchedEffect(entry) {
-                val handle = entry.savedStateHandle
-                val latitude = handle.remove<Double>(RESULT_LATITUDE)
-                val longitude = handle.remove<Double>(RESULT_LONGITUDE)
-                val address = handle.remove<String>(RESULT_ADDRESS).orEmpty()
-                if (latitude != null && longitude != null) {
-                    createStoreViewModel.onLocationPicked(PlaceResult(latitude, longitude, address))
+                entry.savedStateHandle.takePickedLocation()?.let { place ->
+                    createStoreViewModel.onLocationPicked(place)
                 }
             }
 

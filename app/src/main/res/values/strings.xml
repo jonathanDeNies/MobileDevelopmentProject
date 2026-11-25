@@ -54,6 +54,10 @@
     <string name="choose_location_title">Choose your store\'s location</string>
     <string name="choose_location_subtitle">Search for an address or place a pin on the map</string>
     <string name="change_location">Change location</string>
+    <string name="change_location_description">Change location of %1$s</string>
+    <string name="location_updated">Location updated</string>
+    <string name="error_update_location_failed">Couldn\'t update the location. Try again.</string>
+    <string name="error_update_location_permission">You can only change your own stores.</string>
     <string name="save_store_button">Save store</string>
 
     <string name="store_photo_label">Photo</string>

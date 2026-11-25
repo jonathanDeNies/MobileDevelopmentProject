@@ -21,6 +21,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.DeleteOutline
+import androidx.compose.material.icons.filled.EditLocationAlt
 import androidx.compose.material.icons.filled.Storefront
 import androidx.compose.material.icons.filled.Place
 import androidx.compose.material3.AlertDialog
@@ -32,17 +33,25 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExtendedFloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
@@ -58,13 +67,24 @@ import com.example.restredder.ui.components.Base64Image
 fun MyStoresScreen(
     onBack: () -> Unit,
     onAddStore: () -> Unit,
+    onChangeLocation: (Store) -> Unit,
     viewModel: MyStoresViewModel = viewModel()
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+    val snackbarHostState = remember { SnackbarHostState() }
+    val context = LocalContext.current
+
+    LaunchedEffect(uiState.messageRes) {
+        uiState.messageRes?.let { messageRes ->
+            viewModel.onMessageShown()
+            snackbarHostState.showSnackbar(context.getString(messageRes))
+        }
+    }
 
     Scaffold(
         // The activity already applies the system bar padding.
         contentWindowInsets = WindowInsets(0),
+        snackbarHost = { SnackbarHost(snackbarHostState) },
         topBar = {
             TopAppBar(
                 title = { Text(stringResource(R.string.my_stores_title)) },
@@ -92,6 +112,14 @@ fun MyStoresScreen(
                 .padding(innerPadding)
                 .fillMaxSize()
         ) {
+            if (uiState.isUpdatingLocation) {
+                LinearProgressIndicator(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .align(Alignment.TopCenter)
+                )
+            }
+
             when {
                 uiState.isLoading -> CircularProgressIndicator(
                     modifier = Modifier.align(Alignment.Center)
@@ -123,6 +151,11 @@ fun MyStoresScreen(
                     items(uiState.stores, key = { it.id }) { store ->
                         StoreCard(
                             store = store,
+                            changeLocationEnabled = !uiState.isUpdatingLocation,
+                            onChangeLocationClick = {
+                                viewModel.onChangeLocationClick(store)
+                                onChangeLocation(store)
+                            },
                             onDeleteClick = { viewModel.onDeleteClick(store) }
                         )
                     }
@@ -201,6 +234,8 @@ private fun DeleteStoreDialog(
 @Composable
 private fun StoreCard(
     store: Store,
+    changeLocationEnabled: Boolean,
+    onChangeLocationClick: () -> Unit,
     onDeleteClick: () -> Unit
 ) {
     Card(
@@ -270,6 +305,25 @@ private fun StoreCard(
                     maxLines = 2,
                     overflow = TextOverflow.Ellipsis
                 )
+            }
+
+            val changeLocationDescription =
+                stringResource(R.string.change_location_description, store.name)
+            TextButton(
+                onClick = onChangeLocationClick,
+                enabled = changeLocationEnabled,
+                contentPadding = PaddingValues(horizontal = 8.dp),
+                modifier = Modifier.semantics {
+                    contentDescription = changeLocationDescription
+                }
+            ) {
+                Icon(
+                    imageVector = Icons.Filled.EditLocationAlt,
+                    contentDescription = null,
+                    modifier = Modifier.size(18.dp)
+                )
+                Spacer(modifier = Modifier.width(6.dp))
+                Text(stringResource(R.string.change_location))
             }
         }
     }
