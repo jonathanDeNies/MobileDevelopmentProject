@@ -51,6 +51,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.restredder.R
 import com.example.restredder.data.model.Store
 import com.example.restredder.data.model.StoreCategory
+import com.example.restredder.ui.components.Base64Image
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -209,6 +210,17 @@ private fun StoreCard(
         ),
         modifier = Modifier.fillMaxWidth()
     ) {
+        // The card's rounded shape also clips the photo's top corners.
+        if (store.photoBase64.isNotBlank()) {
+            Base64Image(
+                base64 = store.photoBase64,
+                contentDescription = stringResource(R.string.store_photo_description, store.name),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(150.dp)
+            )
+        }
+
         Column(modifier = Modifier.padding(16.dp)) {
             Row(verticalAlignment = Alignment.CenterVertically) {
                 Text(

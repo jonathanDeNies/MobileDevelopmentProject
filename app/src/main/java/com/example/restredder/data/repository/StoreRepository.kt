@@ -18,7 +18,8 @@ class StoreRepository(
         category: StoreCategory,
         latitude: Double,
         longitude: Double,
-        address: String
+        address: String,
+        photoBase64: String
     ): Result<Unit> {
         return try {
             val uid = auth.currentUser?.uid
@@ -30,7 +31,8 @@ class StoreRepository(
                 category = category.key,
                 latitude = latitude,
                 longitude = longitude,
-                address = address
+                address = address,
+                photoBase64 = photoBase64
             )
 
             firestore.collection("stores")

@@ -25,5 +25,7 @@ data class Store(
     val latitude: Double = 0.0,
     val longitude: Double = 0.0,
     // From Nominatim search or reverse geocoding.
-    val address: String = ""
+    val address: String = "",
+    // Optional JPEG photo (max 800 px, quality 70) as Base64; "" when there is no photo.
+    val photoBase64: String = ""
 )

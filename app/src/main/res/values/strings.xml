@@ -56,6 +56,25 @@
     <string name="change_location">Change location</string>
     <string name="save_store_button">Save store</string>
 
+    <string name="store_photo_label">Photo</string>
+    <string name="add_photo_title">Add a photo of your store</string>
+    <string name="add_photo_subtitle">Optional, but it makes your store more personal</string>
+    <string name="change_photo">Change photo</string>
+    <string name="remove_photo">Remove photo</string>
+    <string name="choose_from_gallery">Choose from gallery</string>
+    <string name="take_photo">Take a photo</string>
+    <string name="store_photo_preview">Store photo</string>
+    <string name="store_photo_description">Photo of %1$s</string>
+    <string name="error_photo_failed">Couldn\'t use this photo. Try another one.</string>
+    <string name="error_photo_too_large">This photo is too large. Try another one.</string>
+    <string name="error_no_camera">No camera app found on this device.</string>
+
+    <string name="open_settings_button">Open settings</string>
+    <string name="camera_permission_settings">Camera access is turned off for RestRedder. You can turn it on in the app settings under Permissions.</string>
+    <string name="gallery_permission_settings">Photo access is turned off for RestRedder. You can turn it on in the app settings under Permissions.</string>
+    <string name="error_camera_permission_denied">Without camera access you can\'t take a photo. You can still choose one from your gallery.</string>
+    <string name="error_gallery_permission_denied">Without photo access you can\'t choose a photo from your gallery.</string>
+
     <string name="category_bakery">Bakery</string>
     <string name="category_supermarket">Supermarket</string>
     <string name="category_restaurant">Restaurant</string>
